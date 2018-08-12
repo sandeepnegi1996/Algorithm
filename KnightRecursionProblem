@@ -1,0 +1,58 @@
+import java.util.*;
+public class Main {
+    public static  boolean canPlace(int D[][],int r,int c)
+    {
+        if ( r>=0 && r<8 && 
+            c>=0 && c<8  && 
+            D[r][c]==0)
+            return true;
+        else
+            return false;
+    }
+    public static boolean knightSolve(int D[][],int move_no,int curRow,int curCol)
+    {
+        if (move_no==64) 
+            return true;
+
+        int rowDir[]={2,1,-1,-2,-2,-1,1,2};
+        int colDir[]={1,2,2,1,-1,-2,-2,-1};
+
+        for (int dir=0;dir<8 ;dir++ ) {
+            int nextRow=curRow+rowDir[dir];
+            int nextCol=curCol+colDir[dir];
+
+            if(canPlace(D,nextRow,nextCol)==true){
+                D[nextRow][nextCol]=move_no+1;
+            boolean isSuccessful=knightSolve(D,move_no+1,nextRow,nextCol);
+            if (isSuccessful==true) return true;
+             D[nextRow][nextCol]=0;
+            }
+        }
+        return false;
+    }
+    public static void main(String args[]) {
+        int D[][]=new int[8][8];
+     //   Arrays.fill(D,0);
+
+        D[0][0]=1;
+        
+        boolean  ans=knightSolve(D,1,0,0);
+        if (ans==true) {
+            for(int i=0;i<8;i++)
+            {
+                for(int j=0;j<8;j++)
+                {
+                    System.out.print(D[i][j]+"  ");
+                }
+                System.out.println();
+            }    
+        }
+        else
+        {
+            System.out.println("cannot fill the board");
+        }
+
+
+        
+    }
+}
